@@ -1,0 +1,84 @@
+
+        .container {
+          max-width: 1200px;
+          margin: 2rem auto;
+          padding: 0 1rem;
+          background: #ffffff;
+          border-radius: 0.75rem;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+          font-weight: 700;
+          font-size: 3rem;
+          color: #111827;
+          margin-bottom: 2rem;
+          text-align: center;
+        }
+        ul.cart-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1.5rem;
+        }
+        li.cart-item {
+          display: flex;
+          align-items: center;
+          background: #f9fafb;
+          border-radius: 0.75rem;
+          padding: 1rem 1.5rem;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          transition: box-shadow 0.3s ease;
+        }
+        li.cart-item:hover {
+          box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        img.item-image {
+          width: 64px;
+          height: 64px;
+          border-radius: 0.5rem;
+          object-fit: cover;
+          margin-right: 1rem;
+          flex-shrink: 0;
+        }
+        .item-info {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+        }
+        .item-name {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #111827;
+          margin-bottom: 0.25rem;
+        }
+        .item-price {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #2563eb; /* blue accent */
+          margin-bottom: 0.25rem;
+        }
+        .item-confidence {
+          font-size: 0.875rem;
+          color: #6b7280;
+        }
+        .total-price-container {
+          margin-top: 2rem;
+          padding: 1rem 2rem;
+          border-top: 1px solid #e5e7eb;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .total-price-label {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #111827;
+          margin-right: 1rem;
+        }
+        .total-price-value {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #dc2626; /* vibrant red */
+        }
+  

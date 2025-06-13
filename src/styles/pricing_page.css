@@ -1,0 +1,74 @@
+
+        #pricing {
+          padding-top: 4rem;
+          padding-bottom: 5rem;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        #pricing h2 {
+          font-weight: 700;
+          font-size: 3rem;
+          margin-bottom: 3rem;
+          color: #111827;
+          text-align: center;
+          line-height: 1.1;
+        }
+        .pricing-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 2.5rem;
+        }
+        .pricing-card {
+          background: #ffffff;
+          border-radius: 0.75rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+          padding: 2.4rem 2rem;
+          text-align: center;
+          transition: box-shadow 0.3s ease, transform 0.3s ease;
+          cursor: default;
+        }
+        .pricing-card:focus-within,
+        .pricing-card:hover {
+          box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+          transform: translateY(-5px);
+          outline: none;
+        }
+        .pricing-icon {
+          width: 130px;
+          height: 130px;
+          margin-bottom: 1.25rem;
+          filter: grayscale(40%);
+          transition: filter 0.3s ease;
+        }
+        .pricing-card:hover .pricing-icon,
+        .pricing-card:focus-within .pricing-icon {
+          filter: grayscale(0%);
+        }
+        .pricing-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #111827;
+          margin-bottom: 1rem;
+        }
+        .pricing-price {
+          font-size: 1.875rem;
+          font-weight: 700;
+          color: #111827;
+          margin-bottom: 1.25rem;
+        }
+        .pricing-desc {
+          font-size: 1rem;
+          line-height: 1.5;
+          color: #6b7280;
+          min-height: 64px; /* keep cards uniform height */
+        }
+
+        @media (max-width: 640px) {
+          #pricing h2 {
+            font-size: 2.25rem;
+            margin-bottom: 2rem;
+          }
+        }
+ 

@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "image": "https://www.bbassets.com/media/uploads/p/l/281026_16-cadbury-dairy-milk-chocolate.jpg",
+    "title": "Dairymilk",
+    "price": 20,
+    "rating": 4.5,
+    "purchases": 1200
+  },
+  {
+    "id": 2,
+    "image": "https://5.imimg.com/data5/ECOM/Default/2023/8/338382866/PK/CX/UX/42239568/1692254417531-10042312037cadburyoreocreamebiscuitvanilla.jpeg",
+    "title": "Oreo",
+    "price": 10,
+    "rating": 4.8,
+    "purchases": 750
+  },
+  {
+    "id": 3,
+    "image": "https://storage.googleapis.com/shy-pub/71794/1652426926011_FEB120005500xx12FEB225B.jpeg",
+    "title": "Layssizzilinhot",
+    "price": 20,
+    "rating": 4.9,
+    "purchases": 320
+  },
+   {
+    "id": 4,
+    "image": "https://instamart-media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/032cae2717ad87a54ddf233ebef35423",
+    "title": "Setwet",
+    "price": 10,
+    "rating": 4.9,
+    "purchases": 320
+  },
+  {
+    "id": 5,
+    "image": "https://cdn.moglix.com/p/I/D/D/d/MINIDDKSIGS84-xxlarge.jpg",
+    "title": "Royalfix",
+    "price": 5,
+    "rating": 4.9,
+    "purchases": 320
+  },
+   {
+    "id": 6,
+    "image": "https://5.imimg.com/data5/SELLER/Default/2024/1/378285663/WF/NM/IA/204331230/bru-coffee-rs-2-500x500.jpg",
+    "title": "Brucoffee",
+    "price": 2,
+    "rating": 4.9,
+    "purchases": 320
+  }
+
+  
+]
+
+
