@@ -65,7 +65,7 @@ const CombinedWebSocketCameraComponent = () => {
             socketRef.current.send(base64);
           }
         }
-      }, 200); // 5 FPS
+      }, 1000); // 5 FPS
     };
 
     socketRef.current.onmessage = (event) => {
