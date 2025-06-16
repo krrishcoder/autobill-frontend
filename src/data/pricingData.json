@@ -46,6 +46,14 @@
     "price": 2,
     "rating": 4.9,
     "purchases": 320
+  },
+  {
+    "id": 7,
+    "image": "https://www.ymtagrocery.com/images/products/kit-kat-mini-rs10-1.png",
+    "title": "kitkat",
+    "price": 10,
+    "rating": 4.9,
+    "purchases": 320
   }
 
   
