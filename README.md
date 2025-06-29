@@ -2,6 +2,14 @@
 
 This is the frontend application for the **AutoBill** system, built with **React** and **Vite**. It serves as the user interface for interacting with the backend APIs to perform automated billing tasks, such as uploading receipts and viewing extracted invoice data.
 
+## ✅ Live Demo
+
+You can access the live version of the app here:
+
+🔗 **[AutoBill Frontend Live App](https://autobill-frontend-orcin.vercel.app/)**
+
+Make sure the backend API is up and accessible for full functionality.
+
 ## 📂 Project Structure
 
 ```
