@@ -34,15 +34,15 @@ const SubscriptionRegistration = () => {
         const data = await response.json();
         
         // Transform API data to match component structure
-        const transformedPlans = data.map((plan, index) => ({
-          id: plan.id || plan._id || `plan-${index}`,
-          name: plan.name || plan.planName || 'Plan',
-          price: plan.price || plan.amount || '₹0',
-          duration: plan.duration || plan.validity || '1 month',
-          icon: getIconForPlan(plan.name || plan.planName),
-          features: plan.features || [],
-          color: getColorForPlan(index),
-          popular: plan.popular || index === 1 // Make middle plan popular by default
+        const transformedPlans = data.map((plan) => ({
+          id: plan.plan_id,
+          name: plan.name,
+          price: `₹${plan.price}`,
+          duration: `${plan.duration_months} month${plan.duration_months > 1 ? 's' : ''}`,
+          icon: getIconForPlan(plan.name),
+          features: transformFeatures(plan.features),
+          color: plan.color,
+          popular: plan.popular || false
         }));
         
         setSubscriptionPlans(transformedPlans);
@@ -60,6 +60,76 @@ const SubscriptionRegistration = () => {
     fetchPlans();
   }, []);
 
+  const transformFeatures = (features) => {
+    const featureList = [];
+    
+    // Transform features object to readable feature list
+    if (features.max_detections_per_day === -1) {
+      featureList.push('Unlimited item detection');
+    } else {
+      featureList.push(`Up to ${features.max_detections_per_day} items detection/day`);
+    }
+    
+    if (features.basic_analytics) {
+      featureList.push('Basic analytics dashboard');
+    }
+    if (features.advanced_analytics) {
+      featureList.push('Advanced analytics & insights');
+    }
+    if (features.realtime_analytics) {
+      featureList.push('Real-time analytics');
+    }
+    
+    if (features.email_support) {
+      featureList.push('Email support');
+    }
+    if (features.priority_support) {
+      featureList.push('Priority support');
+    }
+    if (features.dedicated_support_manager) {
+      featureList.push('Dedicated support manager');
+    }
+    
+    if (features.mobile_camera_integration) {
+      featureList.push('Mobile camera integration');
+    }
+    if (features.multi_camera_support) {
+      featureList.push('Multi-camera support');
+    }
+    
+    if (features.basic_invoice_generation) {
+      featureList.push('Basic invoice generation');
+    }
+    if (features.advanced_reporting) {
+      featureList.push('Advanced reporting');
+    }
+    
+    if (features.api_access) {
+      featureList.push('API access');
+    }
+    if (features.custom_training) {
+      featureList.push('Custom item training');
+    }
+    if (features.custom_ai_model_training) {
+      featureList.push('Custom AI model training');
+    }
+    
+    if (features.white_label_solution) {
+      featureList.push('White-label solution');
+    }
+    if (features.advanced_integrations) {
+      featureList.push('Advanced integrations');
+    }
+    if (features.custom_hardware_setup) {
+      featureList.push('Custom hardware setup');
+    }
+    if (features.onsite_training) {
+      featureList.push('On-site training');
+    }
+    
+    return featureList;
+  };
+
   const getIconForPlan = (planName) => {
     const name = planName?.toLowerCase() || '';
     if (name.includes('starter') || name.includes('basic')) {
@@ -70,15 +140,6 @@ const SubscriptionRegistration = () => {
       return <Crown className="w-6 h-6 text-white" />;
     }
     return <Zap className="w-6 h-6 text-white" />;
-  };
-
-  const getColorForPlan = (index) => {
-    const colors = [
-      'from-blue-500 to-blue-600',
-      'from-purple-500 to-purple-600',
-      'from-amber-500 to-orange-500'
-    ];
-    return colors[index % colors.length];
   };
 
   const getDefaultPlans = () => [
