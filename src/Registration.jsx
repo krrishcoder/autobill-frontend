@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Check, X, Crown, Zap, Building, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, EyeOff, Check, X, Crown, Zap, Building, MessageCircle, Loader } from 'lucide-react';
 
 const SubscriptionRegistration = () => {
   const [formData, setFormData] = useState({
@@ -16,14 +16,78 @@ const SubscriptionRegistration = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [verificationStatus, setVerificationStatus] = useState('pending');
+  const [subscriptionPlans, setSubscriptionPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const subscriptionPlans = [
+  // Fetch plans from API
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://autobill-3rd-server-for-crud-opertions.onrender.com/plans');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch plans');
+        }
+        
+        const data = await response.json();
+        
+        // Transform API data to match component structure
+        const transformedPlans = data.map((plan, index) => ({
+          id: plan.id || plan._id || `plan-${index}`,
+          name: plan.name || plan.planName || 'Plan',
+          price: plan.price || plan.amount || '₹0',
+          duration: plan.duration || plan.validity || '1 month',
+          icon: getIconForPlan(plan.name || plan.planName),
+          features: plan.features || [],
+          color: getColorForPlan(index),
+          popular: plan.popular || index === 1 // Make middle plan popular by default
+        }));
+        
+        setSubscriptionPlans(transformedPlans);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching plans:', err);
+        
+        // Fallback to default plans if API fails
+        setSubscriptionPlans(getDefaultPlans());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  const getIconForPlan = (planName) => {
+    const name = planName?.toLowerCase() || '';
+    if (name.includes('starter') || name.includes('basic')) {
+      return <Zap className="w-6 h-6 text-white" />;
+    } else if (name.includes('professional') || name.includes('pro')) {
+      return <Building className="w-6 h-6 text-white" />;
+    } else if (name.includes('enterprise') || name.includes('premium')) {
+      return <Crown className="w-6 h-6 text-white" />;
+    }
+    return <Zap className="w-6 h-6 text-white" />;
+  };
+
+  const getColorForPlan = (index) => {
+    const colors = [
+      'from-blue-500 to-blue-600',
+      'from-purple-500 to-purple-600',
+      'from-amber-500 to-orange-500'
+    ];
+    return colors[index % colors.length];
+  };
+
+  const getDefaultPlans = () => [
     {
       id: 'starter',
       name: 'Starter',
       price: '₹999',
       duration: '1 month',
-      icon: <Zap className="w-6 h-6" />,
+      icon: <Zap className="w-6 h-6 text-white" />,
       features: [
         'Up to 100 items detection/day',
         'Basic analytics dashboard',
@@ -39,7 +103,7 @@ const SubscriptionRegistration = () => {
       name: 'Professional',
       price: '₹2499',
       duration: '3 months',
-      icon: <Building className="w-6 h-6" />,
+      icon: <Building className="w-6 h-6 text-white" />,
       features: [
         'Up to 500 items detection/day',
         'Advanced analytics & insights',
@@ -57,7 +121,7 @@ const SubscriptionRegistration = () => {
       name: 'Enterprise',
       price: '₹4999',
       duration: '6 months',
-      icon: <Crown className="w-6 h-6" />,
+      icon: <Crown className="w-6 h-6 text-white" />,
       features: [
         'Unlimited item detection',
         'Real-time analytics',
@@ -68,7 +132,7 @@ const SubscriptionRegistration = () => {
         'Custom hardware setup',
         'On-site training'
       ],
-      color: 'from-gradient-to-r from-amber-500 to-orange-500',
+      color: 'from-amber-500 to-orange-500',
       popular: false
     }
   ];
@@ -126,7 +190,7 @@ const SubscriptionRegistration = () => {
       </p>
       <div className="flex flex-col sm:flex-row gap-4 items-center">
         <a 
-          href="https://t.me/AutoBillSupportBot" 
+          href="https://t.me/KrrishBillBot" 
           target="_blank" 
           rel="noopener noreferrer"
           className="bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center gap-2"
@@ -135,7 +199,7 @@ const SubscriptionRegistration = () => {
           Join Telegram Bot
         </a>
         <div className="text-sm text-gray-600">
-          <span className="font-medium">Bot ID:</span> @AutoBillSupportBot
+          <span className="font-medium">Bot ID:</span> @KrrishBillBot
         </div>
       </div>
     </div>
@@ -285,59 +349,82 @@ const SubscriptionRegistration = () => {
                   <p className="text-gray-600">Select the plan that best fits your shop's needs</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {subscriptionPlans.map((plan) => (
-                    <div
-                      key={plan.id}
-                      onClick={() => handlePlanSelection(plan.id)}
-                      className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                        formData.selectedPlan === plan.id
-                          ? 'border-blue-500 bg-blue-50 shadow-lg'
-                          : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
-                      } ${plan.popular ? 'ring-2 ring-purple-500' : ''}`}
-                    >
-                      {plan.popular && (
-                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                          <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            Most Popular
-                          </span>
-                        </div>
-                      )}
-                      
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className={`p-2 rounded-lg bg-gradient-to-r ${plan.color}`}>
-                          {plan.icon}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-lg">{plan.name}</h3>
-                          <p className="text-sm text-gray-500">{plan.duration}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <span className="text-3xl font-bold text-gray-800">{plan.price}</span>
-                        <span className="text-gray-500">/{plan.duration}</span>
-                      </div>
-                      
-                      <ul className="space-y-2 mb-6">
-                        {plan.features.map((feature, index) => (
-                          <li key={index} className="flex items-center gap-2 text-sm">
-                            <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      
-                      {formData.selectedPlan === plan.id && (
-                        <div className="absolute top-4 right-4">
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                            <Check className="w-4 h-4 text-white" />
+                {loading ? (
+                  <div className="flex justify-center items-center py-12">
+                    <div className="flex items-center gap-3">
+                      <Loader className="w-6 h-6 animate-spin text-blue-600" />
+                      <span className="text-gray-600">Loading plans...</span>
+                    </div>
+                  </div>
+                ) : error ? (
+                  <div className="text-center py-12">
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                      <X className="w-8 h-8 text-red-500 mx-auto mb-2" />
+                      <p className="text-red-700 font-medium mb-2">Error loading plans</p>
+                      <p className="text-red-600 text-sm">{error}</p>
+                      <button 
+                        onClick={() => window.location.reload()}
+                        className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {subscriptionPlans.map((plan) => (
+                      <div
+                        key={plan.id}
+                        onClick={() => handlePlanSelection(plan.id)}
+                        className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                          formData.selectedPlan === plan.id
+                            ? 'border-blue-500 bg-blue-50 shadow-lg'
+                            : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                        } ${plan.popular ? 'ring-2 ring-purple-500' : ''}`}
+                      >
+                        {plan.popular && (
+                          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                            <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                              Most Popular
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className={`p-2 rounded-lg bg-gradient-to-r ${plan.color}`}>
+                            {plan.icon}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-lg">{plan.name}</h3>
+                            <p className="text-sm text-gray-500">{plan.duration}</p>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                        
+                        <div className="mb-4">
+                          <span className="text-3xl font-bold text-gray-800">{plan.price}</span>
+                          <span className="text-gray-500">/{plan.duration}</span>
+                        </div>
+                        
+                        <ul className="space-y-2 mb-6">
+                          {plan.features.map((feature, index) => (
+                            <li key={index} className="flex items-center gap-2 text-sm">
+                              <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        
+                        {formData.selectedPlan === plan.id && (
+                          <div className="absolute top-4 right-4">
+                            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                              <Check className="w-4 h-4 text-white" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
