@@ -23,7 +23,7 @@ const AutoBillingLandingPage = () => {
         <section className="hero" aria-label="Main introduction">
           <h1>Automate Your Billing & Invoices Effortlessly</h1>
           <p>Save time, reduce errors, and get paid faster with our intelligent auto billing platform designed for businesses of all sizes.</p>
-          <div className="hero-buttons">
+          {/* <div className="hero-buttons">
             <Link to="/self-billing" className="cta-button" tabIndex={0}>Start Your Self Billing</Link>
             <Link to="/register" className="cta-button-secondary bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:from-slate-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 text-sm border border-slate-700" tabIndex={0}>
               <span className="text-lg">📊</span>
@@ -32,7 +32,26 @@ const AutoBillingLandingPage = () => {
                 <span className="button-sub block text-xs opacity-90">Tailored pricing & analytics for your shop</span>
               </span>
             </Link>
-          </div>
+          </div> */}
+
+          <div className="hero-buttons flex flex-col items-start gap-4 mt-6">
+  <Link to="/self-billing" className="cta-button" tabIndex={0}>
+    Start Your Self Billing
+  </Link>
+  
+  <Link
+    to="/register"
+    className="cta-button-secondary bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:from-slate-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 text-sm border border-slate-700"
+    tabIndex={0}
+  >
+    <span className="text-lg">📊</span>
+    <span className="button-text">
+      <span className="button-main block text-sm font-semibold">Get Your Personal Dashboard</span>
+      <span className="button-sub block text-xs opacity-90">Tailored pricing & analytics for your shop</span>
+    </span>
+  </Link>
+</div>
+
         </section>
 
         {/* Features Section */}
