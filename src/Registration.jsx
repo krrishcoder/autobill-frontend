@@ -28,7 +28,7 @@ const SubscriptionRegistration = () => {
     const fetchPlans = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://autobill-3rd-server-for-crud-opertions.onrender.com/plans');
+        const response = await fetch('https://autobill-3rd-server-for-crud-opertions.onrender.com/subscription-plans');
         
         if (!response.ok) {
           throw new Error('Failed to fetch plans');
