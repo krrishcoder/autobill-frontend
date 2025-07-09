@@ -34,23 +34,26 @@ const AutoBillingLandingPage = () => {
             </Link>
           </div> */}
 
-          <div className="hero-buttons flex flex-col items-start gap-4 mt-6">
+          <div className="hero-buttons flex flex-col items-center gap-4 mt-6">
   <Link to="/self-billing" className="cta-button" tabIndex={0}>
     Start Your Self Billing
   </Link>
-  
+
   <Link
     to="/register"
     className="cta-button-secondary bg-gradient-to-r from-slate-800 to-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:from-slate-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 text-sm border border-slate-700"
     tabIndex={0}
   >
-    <span className="text-lg">📊</span>
-    <span className="button-text">
-      <span className="button-main block text-sm font-semibold">Get Your Personal Dashboard</span>
-      <span className="button-sub block text-xs opacity-90">Tailored pricing & analytics for your shop</span>
-    </span>
+    <div className="flex flex-col content-center w-120 text-center">
+      <span className="text-3xl">📊</span>
+      <span className="button-text w-full">
+        <span className="button-main block text-xl font-semibold text-white">Get Your Personal Dashboard</span>
+        <span className="button-sub block text-sm opacity-90 text-white">Tailored pricing & analytics for your shop</span>
+      </span>
+    </div>
   </Link>
 </div>
+
 
         </section>
 
