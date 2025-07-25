@@ -12,6 +12,7 @@ const AutoBillingLandingPage = () => {
             <div className="nav-links">
               <a href="#features" tabIndex={0}>Features</a>
               <Link to="/pricing">Pricing</Link>
+              <Link to="/login" className="login-button" tabIndex={0}>Login</Link>
               <Link to="/register" className="register-button" tabIndex={0}>Register</Link>
             </div>
           </nav>
@@ -49,6 +50,19 @@ const AutoBillingLandingPage = () => {
       <span className="button-text w-full">
         <span className="button-main block text-xl font-semibold text-white">Get Your Personal Dashboard</span>
         <span className="button-sub block text-sm opacity-90 text-white">Tailored pricing & analytics for your shop</span>
+      </span>
+    </div>
+  </Link>
+  <Link
+    to="/login"
+    className="cta-button bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-lg font-medium hover:from-green-700 hover:to-green-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 text-sm border border-green-700"
+    tabIndex={0}
+  >
+    <div className="flex flex-col content-center w-120 text-center">
+      <span className="text-3xl">🔑</span>
+      <span className="button-text w-full">
+        <span className="button-main block text-xl font-semibold text-white">Login to Your Account</span>
+        <span className="button-sub block text-sm opacity-90 text-white">Access your dashboard and manage billing</span>
       </span>
     </div>
   </Link>

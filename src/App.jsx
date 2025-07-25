@@ -6,6 +6,8 @@ import PricingSection from "./components/PricingSection";
 import SelfBilling from "./components/SelfBilling";
 import PaymentPage from './components/PaymentPage';
 import Registration from "./Registration"
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/self-billing" element={<SelfBilling />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/register" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       
       </Routes>
     
