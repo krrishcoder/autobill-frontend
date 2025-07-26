@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './styles/socket_page.css';
 import products from './data/pricingData.json';
 
-const CombinedWebSocketCameraComponent = () => {
+const CombinedWebSocketCameraComponent = ({onCartUpdate}) => {
   const socketRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -12,6 +12,19 @@ const CombinedWebSocketCameraComponent = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState(null);
   const cooldown = 3000; // Cooldown period in milliseconds
+
+
+
+
+
+  // Whenever cartItems changes, notify the parent
+  useEffect(() => {
+    if (onCartUpdate && typeof onCartUpdate === 'function') {
+      onCartUpdate(cartItems);
+    }
+  }, [cartItems]); // runs when cartItems is updated
+
+
 
   useEffect(() => {
     initCamera();
@@ -34,7 +47,14 @@ const CombinedWebSocketCameraComponent = () => {
 
   const initCamera = async () => {
     try {
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error("getUserMedia is not supported in this browser.");
+        return;
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.onloadedmetadata = () => {
@@ -89,12 +109,14 @@ const CombinedWebSocketCameraComponent = () => {
             if (now - lastDetected < cooldown) return;
 
             const matchedProduct = products.find(product => product.title === itemClass);
+
             if (matchedProduct) {
               // Only add the item if it's not already in the cart
               if (!updatedItems[itemClass]) {
                 updatedItems[itemClass] = {
                   title: itemClass,
-                  image: matchedProduct.image || "",
+                  product_id : matchedProduct.id ,
+                  image : matchedProduct.image || "",
                   price: matchedProduct.price,
                   confidence: confidenceScore,
                   quantity: 1 // Start with quantity 1

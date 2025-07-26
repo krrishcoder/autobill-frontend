@@ -1,8 +1,23 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 import '../styles/land_page.css';
+import { useAuth } from '../context/AuthContext';
 
 const AutoBillingLandingPage = () => {
+
+
+  const { isLoggedIn, loading } = useAuth();
+
+    // You might want to show a loading state if the auth check is still in progress
+    if (loading) {
+      return (
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <p className="text-xl text-gray-700">Loading...</p>
+        </div>
+      );
+    }
+
+
   return (
     <>
       <header>
@@ -12,8 +27,8 @@ const AutoBillingLandingPage = () => {
             <div className="nav-links">
               <a href="#features" tabIndex={0}>Features</a>
               <Link to="/pricing">Pricing</Link>
-              <Link to="/login" className="login-button" tabIndex={0}>Login</Link>
-              <Link to="/register" className="register-button" tabIndex={0}>Register</Link>
+             { !isLoggedIn && (<Link to="/login" className="login-button" tabIndex={0}>Login</Link>)}
+             { !isLoggedIn && (<Link to="/register" className="register-button" tabIndex={0}>Register</Link>)}
             </div>
           </nav>
         </div>
@@ -53,6 +68,8 @@ const AutoBillingLandingPage = () => {
       </span>
     </div>
   </Link>
+
+  {!isLoggedIn && (
   <Link
     to="/login"
     className="cta-button bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-lg font-medium hover:from-green-700 hover:to-green-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 text-sm border border-green-700"
@@ -65,7 +82,9 @@ const AutoBillingLandingPage = () => {
         <span className="button-sub block text-sm opacity-90 text-white">Access your dashboard and manage billing</span>
       </span>
     </div>
-  </Link>
+  </Link> )}
+
+
 </div>
 
 
@@ -144,14 +163,14 @@ const AutoBillingLandingPage = () => {
             
             {/* Main CTA Button */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/register" className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3">
+           {!isLoggedIn &&  ( <Link to="/register" className="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3">
                 <span className="text-xl">🏪</span>
                 <span>
                   <span className="block text-lg">Create Your Shop Account</span>
                   <span className="block text-sm opacity-90">Setup takes less than 2 minutes</span>
                 </span>
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </Link>
+              </Link> )}
               
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span className="flex items-center gap-1">

@@ -27,7 +27,7 @@ const Dashboard = () => {
       window.location.href = '/login';
       return;
     }
-    setUser(userData);
+   // setUser(userData);
     fetchDashboardData(userData);
   }, []);
 
@@ -35,6 +35,13 @@ const Dashboard = () => {
     setLoading(true);
     setError('');
     try {
+
+      const userRes = await fetch(`https://autobill-3rd-server-for-crud-opertions.onrender.com/user/${userData.user_id}`);
+      const userD = await userRes.json();
+      setUser(userD);
+
+
+
       // Fetch bills
       const billsRes = await fetch(`https://autobill-3rd-server-for-crud-opertions.onrender.com/user-bills/${userData.user_id}`);
       const billsData = await billsRes.json();
@@ -42,7 +49,10 @@ const Dashboard = () => {
       // Fetch products
       const productsRes = await fetch(`https://autobill-3rd-server-for-crud-opertions.onrender.com/user-products/${userData.user_id}`);
       const productsData = await productsRes.json();
-      setProducts(productsData);
+
+      const normalizedProductsData = Array.isArray(productsData) ? productsData : (productsData && productsData[0] ? productsData[0] : []);
+      setProducts(normalizedProductsData);
+
       // Fetch subscription
       const subRes = await fetch(`https://autobill-3rd-server-for-crud-opertions.onrender.com/subscription/${userData.user_id}`);
       const subData = await subRes.json();
@@ -82,7 +92,6 @@ const Dashboard = () => {
       const res = await fetch(`https://autobill-3rd-server-for-crud-opertions.onrender.com/user-products/${user.user_id}/${selectedProductId}?price=${encodeURIComponent(customPrice)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // No body needed
       });
       if (!res.ok) {
         let errMsg = 'Failed to add product';
@@ -168,6 +177,53 @@ const Dashboard = () => {
   return (
     <div className="p-8 max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Welcome, {user?.name || 'User'}</h1>
+
+      {/* --- User Information Section --- */}
+      <section className="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Account Details</h2>
+        {user ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700">
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Name:</span>
+              <span className="text-lg font-semibold">{user.name}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Email:</span>
+              <span className="text-lg">{user.email} {user.email_verified ? <span className="text-green-600">(Verified)</span> : <span className="text-red-600">(Not Verified)</span>}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Shop Name:</span>
+              <span className="text-lg">{user.shop_name || 'N/A'}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Phone:</span>
+              <span className="text-lg">{user.phone || 'N/A'}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Account Status:</span>
+              <span className="text-lg capitalize">{user.status}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Joined:</span>
+              <span className="text-lg">{new Date(user.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-500">Last Updated:</span>
+              <span className="text-lg">{new Date(user.updated_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+            {user.telegram_user_id && (
+                <div className="flex flex-col">
+                    <span className="text-sm font-medium text-gray-500">Telegram User ID:</span>
+                    <span className="text-lg">{user.telegram_user_id}</span>
+                </div>
+            )}
+          </div>
+        ) : (
+          <p className="text-gray-600">User details not available.</p>
+        )}
+      </section>
+      {/* --- End User Information Section --- */}
+
       {/* Subscription Section */}
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Your Subscription</h2>
@@ -213,6 +269,7 @@ const Dashboard = () => {
             <thead>
               <tr>
                 <th className="py-2 px-4 border-b">Product ID</th>
+                <th className="py-2 px-4 border-b">Image</th> {/* New column for image */}
                 <th className="py-2 px-4 border-b">Title</th>
                 <th className="py-2 px-4 border-b">Price</th>
                 <th className="py-2 px-4 border-b">Actions</th>
@@ -222,6 +279,14 @@ const Dashboard = () => {
               {products.map(product => (
                 <tr key={product.product_id}>
                   <td className="py-2 px-4 border-b">{product.product_id}</td>
+                  <td className="py-2 px-4 border-b">
+                    {/* Display product image, use a placeholder if not available */}
+                    <img
+                      src={product.image || 'https://via.placeholder.com/75'}
+                      alt={product.title || 'Product Image'}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                  </td>
                   <td className="py-2 px-4 border-b">{product.title}</td>
                   <td className="py-2 px-4 border-b">₹{product.price}</td>
                   <td className="py-2 px-4 border-b">
@@ -248,7 +313,7 @@ const Dashboard = () => {
                     <div
                       key={product.id}
                       className={`border rounded p-2 flex flex-col items-center cursor-pointer transition ${selectedProductId === String(product.id) ? 'border-blue-600 ring-2 ring-blue-400' : 'border-gray-300'}`}
-                      onClick={() => setSelectedProductId(String(product.title))}
+                      onClick={() => setSelectedProductId(String(product.id))}
                     >
                       <img src={product.image} alt={product.title} className="w-20 h-20 object-cover rounded mb-2" />
                       <div className="font-semibold text-center text-sm mb-1">{product.title}</div>
@@ -309,4 +374,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
