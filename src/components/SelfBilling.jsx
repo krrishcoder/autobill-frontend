@@ -79,16 +79,6 @@ export default function SelfBilling() {
     
     
 
-    // const billPayload = {
-    //   total_amount: totalAmount,
-    //   items: cartItems.map(item => ({
-    //     product_id: item.product_id,
-    //     quantity: item.quantity,
-    //     price: item.price,
-    //     total: item.total
-    //   }))
-    // };
-
     console.log("total amount : ", totalAmount);
 
     const billPayload = {
